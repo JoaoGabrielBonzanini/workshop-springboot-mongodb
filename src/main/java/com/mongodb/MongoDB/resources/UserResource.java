@@ -1,5 +1,6 @@
 package com.mongodb.MongoDB.resources;
 
+import com.mongodb.MongoDB.domain.Post;
 import com.mongodb.MongoDB.domain.User;
 import com.mongodb.MongoDB.dto.UserDTO;
 import com.mongodb.MongoDB.services.UserService;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/users/")
+@RequestMapping(value = "/users")
 public class UserResource {
 
     @Autowired
@@ -53,5 +54,11 @@ public class UserResource {
         obj.setId(id);
         obj = service.update(obj);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPost(@PathVariable String id){
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
